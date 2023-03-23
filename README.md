@@ -51,3 +51,23 @@ The False Positive model:
 ```
 password-model from huggingface with new tokenizer (tokenizer i fixed)
 ```
+
+Notes about False Positive:
+```
+Finding password is a big issue because of the ratio of rare events (like a word in a document being a password).
+
+Let’s say we download 100 documents that average 5000 words each, and 10 of those documents have a single password within them. 
+That means among the 500,000 candidate words we’re going to process only 10 are passwords. 
+Where does a 99% accuracy rate get us?
+
+499,990 non-passwords * 99% accuracy = 494990 true negative non-passwords + 5000 false positive passwords
+
+10 passwords * 99% accuracy = 0 false negative non-passwords, 10 true positive passwords
+
+We likely will flag all of the passwords, but we’ll also have 5000 false positives! 
+This is a big issue that’s similar to the false positive problem that plagues detection analysts. 
+When a true positive is a relatively rare event in a large dataset, like a password in a document or real intrusion on a host in a large network, 
+even very accurate models will produce a large number of false positives.
+
+-from deeppass-finding-passwords-with-deep-learning by Will Schroeder
+```

@@ -1,6 +1,6 @@
 # PasswordFiner
 
-Api for analyzes text for password candidates.
+API for analyzes text for password candidates.
 
 The API can manually be used at `http://localhost:8080/api/passwords` :
 
@@ -38,3 +38,5 @@ F1 score.     :  0.9898966618590025
 ```
 
 The training notebook for the model is in  `./notebooks/password_model_bilstm.ipynb`
+
+The False Positive model is password-model from huggingface with new tokenizer (fixed tokenizer)

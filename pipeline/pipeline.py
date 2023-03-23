@@ -1,8 +1,9 @@
 from password_find.regex.regex_find import extract_terms_regex, ALL_REGEX
 from password_find.model.model_find import extract_passwords_model
-
-import tensorflow as tf
 from utils.utils import *
+from false_positive.false_positive import false_positive
+import tensorflow as tf
+import numpy as np
 
 
 def process_document(text, custom_regex=None):
@@ -40,16 +41,21 @@ def process_document(text, custom_regex=None):
     model_password = model_password if model_password else []
     regex_passwords = [res['password'] for res in regex_password_candidates]
     regex_passwords = regex_passwords if regex_passwords else []
-    passwords = model_password + regex_passwords
-
+    passwords = list(np.unique(model_password + regex_passwords))
+    false_positive_passwords = false_positive(passwords)
     # TODO: Send for Vader password check for false positive (password-model from huggingface with new tokenizer)
-    result = {
+    long_result = {
         'candidates_password': passwords,
+        'false_positive_passwords': false_positive_passwords,
         'number_of_model_password_candidates': len(model_password_candidates),
         'number_of_regex_password_candidates': len(regex_password_candidates),
         'model_password_candidates': model_password_candidates,
         'regex_password_candidates': regex_password_candidates,
         'custom_regex_matches': custom_regex_matches
     }
+    short_result = {
+        'candidates_password': passwords,
+        'false_positive_scores': false_positive_passwords
+    }
 
-    return result
+    return short_result

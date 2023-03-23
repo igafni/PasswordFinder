@@ -1,6 +1,8 @@
 import tensorflow as tf
 from fastapi import FastAPI
 import uvicorn
+from transformers import pipeline
+
 from utils.inference_utils import *
 from utils.utils_functions import *
 from pipeline.pipeline import *
@@ -11,6 +13,7 @@ from utils.thread_runner import ThreadRunner
 app = FastAPI(description="Password Finder API")
 
 PASSWORD_MODEL = tf.keras.models.load_model(SAVE_MODEL_PATH)
+MODEL_PIPELINE = pipeline("text-classification", model=HUGGING_FACE_MODEL, return_all_scores=True)
 
 """
 Routes

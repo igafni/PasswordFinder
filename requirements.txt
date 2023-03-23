@@ -1,0 +1,9 @@
+flask
+flask-bootstrap
+numpy
+requests
+tensorflow
+pydantic
+fastapi
+uvicorn
+dask

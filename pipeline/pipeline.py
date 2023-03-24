@@ -38,9 +38,9 @@ def process_document(text, custom_regex=None):
     if (custom_regex):
         custom_regex_matches = extract_terms_regex(text, custom_regex)
     model_password = [res['password'] for res in model_password_candidates]
-    model_password = model_password if model_password else []
+    model_password = set(model_password) if model_password else []
     regex_passwords = [res['password'] for res in regex_password_candidates]
-    regex_passwords = regex_passwords if regex_passwords else []
+    regex_passwords = set(regex_passwords) if regex_passwords else []
     passwords = list(np.unique(model_password + regex_passwords))
     false_positive_passwords = false_positive(passwords)
     # TODO: Send for Vader password check for false positive (password-model from huggingface with new tokenizer)
@@ -55,6 +55,8 @@ def process_document(text, custom_regex=None):
     }
     short_result = {
         'candidates_password': passwords,
+        'model_password_candidates': model_password,
+        'regex_password_candidates': regex_passwords,
         'false_positive_scores': false_positive_passwords
     }
 

@@ -38,19 +38,19 @@ def extract_terms_regex(document, regexs):
 
     words = np.array([word.strip() for word in document.split()])
     passwords = list()
+    list_of_passwords = []
     for regex in regexs:
         for x, word in enumerate(words):
             if regex.match(word):
-                left_context = words[:x][-CONTEXT_WORDS:]
-                password = words[x]
-                right_context = words[x + 1:CONTEXT_WORDS + x + 1]
-
-                result = {
-                    "left_context": left_context,
-                    "password": password,
-                    "right_context": right_context
-                }
-
-                passwords.append(result)
-
+                if word not in list_of_passwords:
+                    list_of_passwords.append(word)
+                    left_context = words[:x][-CONTEXT_WORDS:]
+                    password = words[x]
+                    right_context = words[x + 1:CONTEXT_WORDS + x + 1]
+                    result = {
+                        "left_context": left_context,
+                        "password": password,
+                        "right_context": right_context
+                    }
+                    passwords.append(result)
     return passwords
